@@ -2,6 +2,11 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
   <xacro:include filename="$(find ur_description)/urdf/ur5.urdf.xacro" />
+  <!-- <xacro:arg name="transmission_hw_interface" default="hardware_interface/PositionJointInterface"/>                                            -->
+  <xacro:arg name="transmission_hw_interface" default="$(optenv
+                                                       HUSKY_UR_TRANSMISSION_HW_INTERFACE
+                                                       hardware_interface/PositionJointInterface)"/>                                           
+  <xacro:arg name="kinematics_config" default="$(find husky_mit57_description)/config/ur5_default.yaml"/>                                                    
 
   <link name="ur_plate_link">
     <visual>
@@ -30,5 +35,5 @@
     <origin xyz="$(optenv HUSKY_UR_XYZ -0.105 0.0 0.00635)" rpy="$(optenv HUSKY_UR_RPY 0 0 3.1415927)"/>
   </joint>
 
-  <xacro:ur5_robot prefix="ur_arm_" joint_limited="true"/>
+  <xacro:ur5_robot prefix="ur_arm_" joint_limited="true" transmission_hw_interface="$(arg transmission_hw_interface)" kinematics_file="${load_yaml('$(arg kinematics_config)')}"/>
 </robot>
